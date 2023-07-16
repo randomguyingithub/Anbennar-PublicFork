@@ -1,0 +1,56 @@
+name: Releases Pipeline
+
+on:
+  workflow_run:
+    workflows: [Bracket Pipeline,Decisions Pipeline,Events Pipeline,Localization Pipeline]
+    types:
+      - completed # when one of the pipeline completed (fail doesn't count)
+  workflow_dispatch: #can be trigger manually
+
+
+
+jobs:
+  addtag:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    outputs:
+      tag: ${{ steps.newtag.outputs.new_tag }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: Bump version and push tag 
+        id: newtag
+        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+          WITH_V: false        
+  
+  Archiving:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+      - name: Prepare Archive
+        uses: thedoctor0/zip-release@0.7.1
+        with:
+          type: 'zip'
+          filename: 'anbennargit.zip'
+      - name: wait tag created
+        uses: yogeshlonkar/wait-for-jobs@v0
+        with:
+            # GitHub token to access actions API
+            # required: true
+            gh-token: ${{ secrets.GITHUB_TOKEN }}
+
+            # Comma or newline separated list of names of job dependencies for this step, it must be `name:` property of job if set
+            # required: true
+            jobs: 'addtag'
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+            tag: ${{ needs.addtag.outputs.tag }}
+            artifacts: "anbennargit.zip"
+

@@ -1,0 +1,28 @@
+name: Bracket Pipeline
+
+on:
+  push:
+    branches: 
+      - new-master  # trigger when file pushed
+    paths:
+      - "**.txt" # ... if it changes any txt file
+  pull_request:
+    branches: 
+      - new-master  # trigger when pull request accepted on "new-master" branch
+    paths:
+      - "**.txt"
+  workflow_dispatch: # can be trigger manually too
+
+
+
+jobs: # in github, you can achieve parallel steps via making them into different jobs instead, or different yml files
+  Brackets:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Brackets Checking
+        shell: bash
+        run: |
+           echo "Checking localization encoding..."
+           /bin/bash checkEncoding.sh -i

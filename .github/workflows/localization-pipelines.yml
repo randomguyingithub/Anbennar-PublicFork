@@ -1,0 +1,28 @@
+name: Localization Pipeline
+
+on:
+  push:
+    branches: 
+      - new-master  # trigger when file pushed
+    paths:
+      - localisation/*.txt # ... if it changes any txt file in localisation directory
+  pull_request:
+    branches: 
+      - new-master  # trigger when pull request accepted on "new-master" branch
+    paths:
+      - localisation/*.txt 
+  workflow_dispatch: # can be trigger manually too
+
+
+
+jobs: # in github, you can achieve parallel steps via making them into different jobs instead, or different yml files
+  Localization:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Localization Encoding
+        shell: bash
+        run: |
+           echo "Checking Localization encoding..."
+           /bin/bash checkEncoding.sh -l
