@@ -34,7 +34,7 @@ jobs:
       - name: upload json file 
         uses: actions/upload-artifact@v3
         with:
-          name: tagjson
+          name: tag.json
           path: tag.json
           
   
