@@ -62,9 +62,7 @@ jobs:
             # required: true
             jobs: 'addtag'
             outputs-from: tag.json
-      - name: Release
-        uses: ncipollo/release-action@v1
-        with:
-            tag:  ${{ fromJSON(steps.wait-for-jobs.outputs.outputs).TAGS }}
-            artifacts: "anbennargit.zip"
+      - name: check if output works
+        run: |
+         echo ${{ fromJSON(steps.wait-for-jobs.outputs.outputs).tags }}
 
