@@ -51,6 +51,6 @@ jobs:
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-            tag: ${{ needs.addtag.outputs.tag }}
+            tag: ${{ jobs.addtag.outputs.tag }}
             artifacts: "anbennargit.zip"
 
