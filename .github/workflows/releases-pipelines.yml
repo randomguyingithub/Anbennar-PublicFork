@@ -36,6 +36,7 @@ jobs:
       - name: Prepare Archive
         uses: thedoctor0/zip-release@0.7.1
         with:
+          path: anbennar.png 
           type: 'zip'
           filename: 'anbennargit.zip'
       - name: wait tag created
@@ -48,9 +49,10 @@ jobs:
             # Comma or newline separated list of names of job dependencies for this step, it must be `name:` property of job if set
             # required: true
             jobs: 'addtag'
+            outputs-from: output1.json
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-            tag: ${{ jobs.addtag.outputs.tag }}
+            tag:  ${{ fromJSON(steps.wait-for-jobs.outputs.outputs).tag }}
             artifacts: "anbennargit.zip"
 
