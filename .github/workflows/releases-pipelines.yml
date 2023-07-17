@@ -15,7 +15,7 @@ jobs:
     permissions:
       contents: write
     outputs:
-      tag: ${{ steps.newtag.outputs.new_tag }}
+      tags: ${{ steps.newtag.outputs.new_tag }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -64,6 +64,6 @@ jobs:
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-            tag:  ${{ fromJSON(steps.wait-for-jobs.outputs.outputs).tag }}
+            tag:  ${{ fromJSON(steps.wait-for-jobs.outputs.outputs).TAGS }}
             artifacts: "anbennargit.zip"
 
