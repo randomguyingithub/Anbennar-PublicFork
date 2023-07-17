@@ -26,6 +26,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
           WITH_V: false        
+      - name: create json file for tags
+        uses: schdck/create-env-json@v1
+        with:
+          file-name: 'tag.json'
+          tag: ${{ steps.newtag.outputs.new_tag }}
+      - name: upload json file 
+        uses: actions/upload-artifact@v3
+        with:
+          name: tagjson
+          path: tag.json
+          
   
   Archiving:
     runs-on: ubuntu-22.04
@@ -49,7 +60,7 @@ jobs:
             # Comma or newline separated list of names of job dependencies for this step, it must be `name:` property of job if set
             # required: true
             jobs: 'addtag'
-            outputs-from: addtag.json
+            outputs-from: tag.json
       - name: Release
         uses: ncipollo/release-action@v1
         with:
