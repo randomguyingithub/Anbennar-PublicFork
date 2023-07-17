@@ -64,5 +64,5 @@ jobs:
             outputs-from: tag.json
       - name: check if output works
         run: |
-         echo ${{ fromJSON(steps.wait-for-jobs.outputs.outputs).tags }}
+         echo ${{ fromJSON(steps.wait-for-jobs.outputs.outputs).tag }}
 
