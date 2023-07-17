@@ -60,10 +60,10 @@ jobs:
             # Comma or newline separated list of names of job dependencies for this step, it must be `name:` property of job if set
             # required: true
             jobs: 'addtag'
-            outputs-from: tag.json
+            outputs-from: tagjson
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-            tag:  ${{ fromJSON(steps.wait-for-jobs.outputs.tag).tag }}
+            tag:  ${{ fromJSON(steps.wait-for-jobs.outputs.outputs).tag }}
             artifacts: "anbennargit.zip"
 
