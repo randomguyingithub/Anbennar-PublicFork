@@ -51,6 +51,7 @@ jobs:
           type: 'zip'
           filename: 'anbennargit.zip'
       - name: wait tag created
+        id: wait-for-jobs
         uses: yogeshlonkar/wait-for-jobs@v0
         with:
             # GitHub token to access actions API
